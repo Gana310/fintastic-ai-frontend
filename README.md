@@ -8,7 +8,8 @@ FINtastic AI is a comprehensive financial analysis platform that combines real-t
 
 - **Search and analyze stocks** with real-time data
 - **Get AI-powered insights** and recommendations
-- **Track portfolio performance** with interactive charts
+- **Track portfolio performance** with interactive 
+- **Complete investor profile questionnaire** with personalized goal assessmentcharts
 - **View market trends** and technical indicators
 - **Access historical data** and predictive analytics
 
@@ -107,6 +108,18 @@ npm run type-check
 ```
 
 ## 🎯 Key Features
+
+
+### 0. Investor Goals Questionnaire
+
+- **Personalized investment profile setup** with multi-step questionnaire
+- **Short-term goals** (trading, saving, emergency fund, debt payoff)
+- **Long-term goals** (retirement, education, wealth building, property, financial independence)
+- **Financial situation assessment** (monthly contribution capacity, current savings)
+- **Risk tolerance evaluation** (conservative, moderate, aggressive)
+- **Experience level tracking** (beginner, intermediate, advanced)
+- **Investment horizon selection** (short-term, medium-term, long-term)
+- **Profile-based recommendations** tailored to user goals and risk appetite
 
 ### 1. Stock Search & Analysis
 - Real-time stock search with autocomplete
