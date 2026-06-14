@@ -63,7 +63,7 @@ const Analysis: React.FC = () => {
       {data && !isLoading && (
         <div className="max-w-7xl mx-auto animate-fade-in-up">
           <div className="mb-8 flex items-end gap-4 border-b pb-4 border-gray-200">
-            <h2 className="text-3xl font-bold text-gray-900">{data.name}</h2>
+            <h2 className="text-3xl font-bold text-gray-900">{data.companyName}</h2>
             <span className="text-xl text-gray-500 font-medium pb-1">({data.ticker})</span>
             <div className="ml-auto text-2xl font-bold text-gray-900">
               ${data.currentPrice.toLocaleString()}
@@ -73,7 +73,7 @@ const Analysis: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
             {/* Left Column: Health Score */}
             <div className="lg:col-span-1">
-              <FinancialHealthScore score={data.healthScore} />
+              <FinancialHealthScore score={data.financialHealthIndex} breakdown={data.healthBreakdown} />
             </div>
 
             {/* Middle Column: Growth Projections */}
@@ -90,8 +90,23 @@ const Analysis: React.FC = () => {
           {/* Full Width Details */}
           <div className="bg-white rounded-xl shadow-lg p-8 border border-gray-100">
             <h3 className="text-xl font-bold text-gray-900 mb-4">Detailed Analysis</h3>
-            <p className="text-gray-700 leading-relaxed text-lg">
+            <p className="text-gray-700 leading-relaxed text-lg mb-6">
               {data.recommendation.details}
+            </p>
+
+            {data.keySignals && data.keySignals.length > 0 && (
+              <div>
+                <h4 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-2">Key Signals</h4>
+                <ul className="list-disc list-inside text-gray-700 space-y-1">
+                  {data.keySignals.map((signal, idx) => (
+                    <li key={idx}>{signal}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            <p className="text-xs text-gray-400 mt-6">
+              Last updated: {new Date(data.lastUpdated).toLocaleString()}
             </p>
           </div>
         </div>

@@ -5,12 +5,14 @@ import { GoalSelector } from './GoalSelector';
 import { FinancialSituation } from './FinancialSituation';
 import { RiskToleranceSelector } from './RiskToleranceSelector';
 import { InvestorProfile, ShortTermGoal, LongTermGoal, RiskTolerance, ExperienceLevel, InvestmentHorizon } from '../../types/InvestorProfile';
+import { submitOnboardingProfile } from '../../api/onboarding';
 
 export const OnboardingFlow: React.FC = () => {
   const navigate = useNavigate();
   const profile = useUserStore((state) => state.profile);
   const setProfile = useUserStore((state) => state.setProfile);
   const [step, setStep] = useState(1);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const totalSteps = 4;
 
   const [formData, setFormData] = useState({
@@ -27,7 +29,7 @@ export const OnboardingFlow: React.FC = () => {
     if (step < totalSteps) {
       setStep(step + 1);
     } else {
-      handleSubmit();
+      void handleSubmit();
     }
   };
 
@@ -39,7 +41,7 @@ export const OnboardingFlow: React.FC = () => {
     navigate('/analysis');
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     // Construct the full InvestorProfile object
     const profile: InvestorProfile = {
       shortTermGoals: formData.shortTermGoals,
@@ -60,6 +62,19 @@ export const OnboardingFlow: React.FC = () => {
       createdAt: new Date(),
       updatedAt: new Date(),
     };
+
+    setIsSubmitting(true);
+    try {
+      // Sync a simplified version of this profile with the backend so the user's
+      // goal/horizon/risk tolerance can inform server-side recommendations.
+      const backendProfile = await submitOnboardingProfile(profile);
+      profile.backendProfileId = backendProfile.id;
+    } catch (err) {
+      // Non-fatal: keep the locally-saved profile even if the backend sync fails
+      console.error('Failed to sync onboarding profile with backend:', err);
+    } finally {
+      setIsSubmitting(false);
+    }
 
     setProfile(profile);
     navigate('/analysis');
@@ -160,9 +175,12 @@ export const OnboardingFlow: React.FC = () => {
         </button>
         <button
           onClick={handleNext}
-          className="px-8 py-2.5 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors shadow-sm hover:shadow focus:ring-4 focus:ring-blue-100"
+          disabled={isSubmitting}
+          className={`px-8 py-2.5 bg-blue-600 text-white rounded-lg font-medium transition-colors shadow-sm hover:shadow focus:ring-4 focus:ring-blue-100 ${
+            isSubmitting ? 'opacity-60 cursor-not-allowed' : 'hover:bg-blue-700'
+          }`}
         >
-          {step === totalSteps ? 'Complete Profile' : 'Next Step'}
+          {step === totalSteps ? (isSubmitting ? 'Saving...' : 'Complete Profile') : 'Next Step'}
         </button>
       </div>
     </div>

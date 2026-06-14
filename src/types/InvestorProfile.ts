@@ -53,6 +53,9 @@ export interface InvestorProfile {
   // Timestamps
   createdAt: Date;
   updatedAt: Date;
+
+  // Backend onboarding profile id (set after syncing with the API)
+  backendProfileId?: string;
 }
 
 export interface QuestionnaireFormData {

@@ -1,23 +1,53 @@
+import { apiClient } from './client';
+
+// Mirrors the backend's CompanyAnalysis shape (src/types.ts, GET /api/analysis/:ticker)
+export interface FinancialHealthBreakdown {
+  profitability: number; // 0-100
+  liquidity: number; // 0-100
+  debtManagement: number; // 0-100
+  revenueGrowth: number; // 0-100
+  cashFlow: number; // 0-100
+}
+
+export interface ProjectionDetail {
+  growthPercent: number; // projected % growth over the period
+  projectedPrice: number; // projected share price at end of period
+  outlook: string; // plain-language commentary
+}
+
 export interface CompanyAnalysis {
   ticker: string;
-  name: string;
+  companyName: string;
   currentPrice: number;
-  healthScore: number; // 0-100
+
+  financialHealthIndex: number;
+  healthBreakdown: FinancialHealthBreakdown;
+
   projections: {
-    year3Growth: number; // percentage
-    year5Growth: number; // percentage
-    year3Price: number;
-    year5Price: number;
+    threeYear: ProjectionDetail;
+    fiveYear: ProjectionDetail;
+    epsForecast: number;
   };
+
   recommendation: {
-    action: 'Buy' | 'Hold' | 'Sell';
+    action: 'Buy' | 'Hold' | 'Watch' | 'Sell';
     summary: string; // Plain English summary
     details: string; // The "Story"
   };
+
+  keySignals: string[];
   lastUpdated: string;
 }
 
-const USE_MOCK = true;
+const USE_MOCK = import.meta.env.VITE_USE_MOCK === 'true';
+
+const buildHealthBreakdown = (isGood: boolean): FinancialHealthBreakdown => ({
+  profitability: isGood ? 85 : 50,
+  liquidity: isGood ? 80 : 50,
+  debtManagement: isGood ? 78 : 45,
+  revenueGrowth: isGood ? 88 : 40,
+  cashFlow: isGood ? 82 : 48,
+});
 
 // Mock Data Generator
 const mockFetchCompanyAnalysis = async (ticker: string): Promise<CompanyAnalysis> => {
@@ -29,17 +59,34 @@ const mockFetchCompanyAnalysis = async (ticker: string): Promise<CompanyAnalysis
 
   const basePrice = Math.floor(Math.random() * 500) + 50;
   const growthRate = isGood ? 0.15 : 0.05;
+  const healthBreakdown = buildHealthBreakdown(isGood);
+  const financialHealthIndex = Math.round(
+    (healthBreakdown.profitability +
+      healthBreakdown.liquidity +
+      healthBreakdown.debtManagement +
+      healthBreakdown.revenueGrowth +
+      healthBreakdown.cashFlow) /
+      5
+  );
 
   return {
     ticker: t,
-    name: getCompanyName(t),
+    companyName: getCompanyName(t),
     currentPrice: basePrice,
-    healthScore: isGood ? 85 + Math.floor(Math.random() * 10) : 40 + Math.floor(Math.random() * 30),
+    financialHealthIndex,
+    healthBreakdown,
     projections: {
-      year3Growth: growthRate * 100 * 3,
-      year5Growth: growthRate * 100 * 5,
-      year3Price: Math.round(basePrice * (1 + growthRate) ** 3),
-      year5Price: Math.round(basePrice * (1 + growthRate) ** 5),
+      threeYear: {
+        growthPercent: growthRate * 100 * 3,
+        projectedPrice: Math.round(basePrice * (1 + growthRate) ** 3),
+        outlook: `Projected growth based on current fundamentals and sector trends.`,
+      },
+      fiveYear: {
+        growthPercent: growthRate * 100 * 5,
+        projectedPrice: Math.round(basePrice * (1 + growthRate) ** 5),
+        outlook: `Cumulative growth assuming continued execution and stable market conditions.`,
+      },
+      epsForecast: Math.round((basePrice / 20) * 10) / 10,
     },
     recommendation: {
       action: isGood ? 'Buy' : 'Hold',
@@ -50,6 +97,9 @@ const mockFetchCompanyAnalysis = async (ticker: string): Promise<CompanyAnalysis
         ? `${t} has a robust balance sheet and is well-positioned to capitalize on emerging market trends. Our AI analysis indicates a high probability of outperforming the market over the next 3-5 years, driven by innovation and strong cash flow.`
         : `${t} is currently in a transition phase. While the core business is stable, growth has slowed. We recommend holding current positions while monitoring upcoming earnings reports for signs of a turnaround.`,
     },
+    keySignals: isGood
+      ? ['Revenue growth trending positive', 'Strong free cash flow generation']
+      : ['Metrics broadly in line with sector averages'],
     lastUpdated: new Date().toISOString(),
   };
 };
@@ -67,13 +117,10 @@ const getCompanyName = (ticker: string) => {
   return map[ticker] || `${ticker} Corporation`;
 };
 
-// Real API Implementation (Stub)
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// Real API Implementation
 const realFetchCompanyAnalysis = async (ticker: string): Promise<CompanyAnalysis> => {
-  // TODO: Replace with actual API call
-  // const response = await fetch(`/api/stocks/${ticker}/analysis`);
-  // return response.json();
-  throw new Error('Real API not implemented yet');
+  const response = await apiClient.get<CompanyAnalysis>(`/api/analysis/${encodeURIComponent(ticker)}`);
+  return response.data;
 };
 
 export const fetchCompanyAnalysis = (ticker: string) => {

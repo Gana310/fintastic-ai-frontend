@@ -1,10 +1,20 @@
 import React from 'react';
+import { FinancialHealthBreakdown } from '../../api/stocks';
 
 interface FinancialHealthScoreProps {
   score: number;
+  breakdown?: FinancialHealthBreakdown;
 }
 
-export const FinancialHealthScore: React.FC<FinancialHealthScoreProps> = ({ score }) => {
+const BREAKDOWN_LABELS: Record<keyof FinancialHealthBreakdown, string> = {
+  profitability: 'Profitability',
+  liquidity: 'Liquidity',
+  debtManagement: 'Debt Management',
+  revenueGrowth: 'Revenue Growth',
+  cashFlow: 'Cash Flow',
+};
+
+export const FinancialHealthScore: React.FC<FinancialHealthScoreProps> = ({ score, breakdown }) => {
   const getColor = (s: number) => {
     if (s >= 80) return 'text-green-600';
     if (s >= 60) return 'text-yellow-600';
@@ -57,6 +67,26 @@ export const FinancialHealthScore: React.FC<FinancialHealthScoreProps> = ({ scor
       <div className={`mt-4 px-4 py-1 rounded-full text-sm font-semibold bg-opacity-10 ${getColor(score).replace('text-', 'bg-')} ${getColor(score)}`}>
         {getLabel(score)}
       </div>
+
+      {breakdown && (
+        <div className="mt-6 w-full space-y-2">
+          {(Object.keys(breakdown) as Array<keyof FinancialHealthBreakdown>).map((key) => {
+            const value = breakdown[key];
+            return (
+              <div key={key} className="flex items-center gap-2">
+                <div className="w-32 text-xs text-gray-500 font-medium">{BREAKDOWN_LABELS[key]}</div>
+                <div className="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden">
+                  <div
+                    className={`h-full rounded-full ${getColor(value).replace('text-', 'bg-')}`}
+                    style={{ width: `${value}%` }}
+                  />
+                </div>
+                <div className="w-8 text-xs text-gray-600 font-semibold text-right">{value}</div>
+              </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 };
