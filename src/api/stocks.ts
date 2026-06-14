@@ -118,14 +118,19 @@ const getCompanyName = (ticker: string) => {
 };
 
 // Real API Implementation
-const realFetchCompanyAnalysis = async (ticker: string): Promise<CompanyAnalysis> => {
-  const response = await apiClient.get<CompanyAnalysis>(`/api/analysis/${encodeURIComponent(ticker)}`);
+const realFetchCompanyAnalysis = async (ticker: string, profileId?: string): Promise<CompanyAnalysis> => {
+  const response = await apiClient.get<CompanyAnalysis>(`/api/analysis/${encodeURIComponent(ticker)}`, {
+    params: profileId ? { profileId } : undefined,
+  });
   return response.data;
 };
 
-export const fetchCompanyAnalysis = (ticker: string) => {
+// profileId (InvestorProfile.backendProfileId) is optional and, when present,
+// lets the backend link this analysis_view event to the viewer's onboarding
+// profile for behavioural instrumentation (PRFAQ Day-1 requirement).
+export const fetchCompanyAnalysis = (ticker: string, profileId?: string) => {
   if (USE_MOCK) {
     return mockFetchCompanyAnalysis(ticker);
   }
-  return realFetchCompanyAnalysis(ticker);
+  return realFetchCompanyAnalysis(ticker, profileId);
 };

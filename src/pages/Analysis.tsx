@@ -7,7 +7,7 @@ import { GrowthProjections } from '../components/analysis/GrowthProjections';
 import { RecommendationCard } from '../components/analysis/RecommendationCard';
 
 const Analysis: React.FC = () => {
-  const { hasCompletedOnboarding } = useUserStore();
+  const { hasCompletedOnboarding, profile } = useUserStore();
   const [data, setData] = useState<CompanyAnalysis | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
@@ -16,7 +16,7 @@ const Analysis: React.FC = () => {
     setIsLoading(true);
     setError('');
     try {
-      const result = await fetchCompanyAnalysis(ticker);
+      const result = await fetchCompanyAnalysis(ticker, profile?.backendProfileId);
       setData(result);
     } catch (err) {
       setError('Failed to fetch analysis. Please try again.');
