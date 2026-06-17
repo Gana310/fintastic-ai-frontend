@@ -1,4 +1,4 @@
-# 🚀 Fintastic AI - Quickstart Guide
+# 🚀 Clarinvest - Quickstart Guide
 
 ## ✅ Setup Complete!
 
@@ -17,7 +17,7 @@ All configuration files have been created and committed. The frontend is ready t
 
 ```bash
 # 1. Clone and navigate
-cd ~/projects/fintastic-ai-frontend
+cd ~/projects/clarinvest-frontend
 git pull origin main
 
 # 2. Install dependencies
@@ -33,7 +33,7 @@ npm run dev
 ## 🔧 Run the Backend (separate terminal)
 
 ```bash
-cd ~/projects/fintastic-ai-backend
+cd ~/projects/clarinvest-backend
 npm install
 npm run dev
 ```

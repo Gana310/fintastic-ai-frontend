@@ -1,11 +1,11 @@
-# FINtastic AI - Frontend Setup & Implementation Guide
+# Clarinvest - Frontend Setup & Implementation Guide
 
 ## Quick Start
 
 ```bash
 # Clone the repository
-git clone https://github.com/Gana310/fintastic-ai-frontend.git
-cd fintastic-ai-frontend
+git clone https://github.com/Gana310/clarinvest-frontend.git
+cd clarinvest-frontend
 
 # Install dependencies
 npm install
@@ -22,7 +22,7 @@ npm run dev
 Create this exact folder/file structure:
 
 ```
-fintastic-ai-frontend/
+clarinvest-frontend/
 ├── src/
 │   ├── api/
 │   │   └── client.ts          # Axios API client
@@ -148,7 +148,7 @@ export default {
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>FINtastic AI - AI-Powered Investing Copilot</title>
+    <title>Clarinvest - AI-Powered Investing Copilot</title>
   </head>
   <body>
     <div id="root"></div>
@@ -265,7 +265,7 @@ export const useUserStore = create<UserState>()(persist(
     setUserProfile: (profile) => set({ userProfile: profile }),
     clearUser: () => set({ userId: null, userProfile: null }),
   }),
-  { name: 'fintastic-user' }
+  { name: 'clarinvest-user' }
 ));
 ```
 
@@ -315,11 +315,11 @@ export default App;
 
 ```bash
 # Terminal 1: Backend
-cd fintastic-ai-backend
+cd clarinvest-backend
 npm run dev
 
 # Terminal 2: Frontend  
-cd fintastic-ai-frontend
+cd clarinvest-frontend
 npm run dev
 
 # Access app at http://localhost:5173

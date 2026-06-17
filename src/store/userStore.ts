@@ -23,7 +23,7 @@ export const useUserStore = create<UserState>()(
       hasCompletedOnboarding: () => !!get().profile,
     }),
     {
-      name: 'fintastic-user-storage',
+      name: 'clarinvest-user-storage',
     }
   )
 );

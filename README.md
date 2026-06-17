@@ -1,10 +1,10 @@
-# 📊 FINtastic AI - Frontend
+# 📊 Clarinvest - Frontend
 
-Frontend for FINtastic AI - an AI-powered financial analysis platform that provides intelligent stock insights and analysis.
+Frontend for Clarinvest - an AI-powered financial analysis platform that provides intelligent stock insights and analysis.
 
 ## 🚀 Overview
 
-FINtastic AI is a comprehensive financial analysis platform that combines real-time stock data with AI-powered insights to help investors make informed decisions. The frontend provides an intuitive interface for users to:
+Clarinvest is a comprehensive financial analysis platform that combines real-time stock data with AI-powered insights to help investors make informed decisions. The frontend provides an intuitive interface for users to:
 
 - **Search and analyze stocks** with real-time data
 - **Get AI-powered insights** and recommendations
@@ -21,7 +21,7 @@ FINtastic AI is a comprehensive financial analysis platform that combines real-t
 - **State Management**: Zustand
 - **Data Fetching**: Axios
 - **Routing**: React Router v6
-- **API**: RESTful API (connects to fintastic-ai-backend)
+- **API**: RESTful API (connects to clarinvest-backend)
 
 ## 🛠️ Installation
 
@@ -29,14 +29,14 @@ FINtastic AI is a comprehensive financial analysis platform that combines real-t
 
 - Node.js 18+ installed
 - npm or yarn package manager
-- Backend API running (see [fintastic-ai-backend](https://github.com/Gana310/fintastic-ai-backend))
+- Backend API running (see [clarinvest-backend](https://github.com/Gana310/clarinvest-backend))
 
 ### Setup
 
 ```bash
 # Clone the repository
-git clone https://github.com/Gana310/fintastic-ai-frontend.git
-cd fintastic-ai-frontend
+git clone https://github.com/Gana310/clarinvest-frontend.git
+cd clarinvest-frontend
 
 # Install dependencies
 npm install
@@ -56,7 +56,7 @@ The app will be available at `http://localhost:5173`
 ## 📁 Project Structure
 
 ```
-fintastic-ai-frontend/
+clarinvest-frontend/
 ├── src/
 │   ├── components/          # Reusable React components
 │   │   ├── StockCard/      # Stock display cards
@@ -146,7 +146,7 @@ npm run type-check
 
 ## 🔗 API Integration
 
-The frontend connects to the [fintastic-ai-backend](https://github.com/Gana310/fintastic-ai-backend) API:
+The frontend connects to the [clarinvest-backend](https://github.com/Gana310/clarinvest-backend) API:
 
 ### API Endpoints Used
 
@@ -252,7 +252,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🔗 Related Projects
 
-- [fintastic-ai-backend](https://github.com/Gana310/fintastic-ai-backend) - Backend API for FINtastic AI
+- [clarinvest-backend](https://github.com/Gana310/clarinvest-backend) - Backend API for Clarinvest
 
 ## 💬 Support
 
